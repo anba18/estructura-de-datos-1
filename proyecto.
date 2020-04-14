@@ -1,0 +1,420 @@
+//LIBRERIAS
+#include <iostream>
+#include <iomanip>
+#include <stdlib.h>
+#include <conio.h>
+#include <windows.h>
+#include <malloc.h>
+
+using namespace std;
+//CREACION DE ESTRUCTURAS
+struct pila{ //nodo pila
+	char nombre[20];
+	struct pila *ant;
+}*CAB=NULL,*AUX=NULL;
+
+struct cola{ //nodo cola
+	char nombre2[20];
+	struct cola *sig;
+}*CAB2=NULL,*AUX2=NULL,*FIN2=NULL;
+
+struct Nodo{
+    int dato;
+    Nodo *der;
+    Nodo *izq;
+};
+//PROTOTIPOS DE FUNCIONES QUE UTILIZAMOS
+void menu ();
+void menuPila ();
+void menuCola ();
+void menuArbol ();
+void insertarPila();
+void extraerPila();
+void visualizarPila();
+void insertarCola();
+void extraerCola();
+void visualizarCola();
+
+Nodo *crearNodo (int );
+Nodo *arbol = NULL;
+
+void insertarNodo(Nodo *&,int );
+void preOrden(Nodo *);
+void postOrden(Nodo *);
+void inOrden (Nodo *);
+
+int main (){
+		char opc,opc1 ;
+		do{
+			system ("cls");
+			menu ();
+			cout<<"\tOPCION: ";
+			cin>>opc;
+				switch (opc){
+					system ("cls");
+					case '1' :{
+						system ("cls");
+						do {
+							system ("cls");
+							menuPila ();
+							cout<<"\tOPCION: ";
+							opc1=getch( );
+							switch(opc1) {
+								case '1':{
+									fflush(stdin);
+									cout<<"\t\tINSERTAR"<<endl;
+									insertarPila();
+									break;
+								}
+								case '2':{
+									extraerPila();
+									cout<<"\t\tSE HA ELIMINADO EL DATO CON EXITO"<<endl;
+									cout<<"\t\tPRESIONE UNA TECLA PARA CONTINUAR"<<endl;
+									getch ();
+									break;
+								}
+								case '3':{
+									cout<<"\t\tVISUALIZAR"<<endl;
+									visualizarPila();
+									break;
+								}
+								case '4':{
+									cout<<"\t\tHA DECIDIO SALIR AL MENU PRINCIPAL"<<endl;
+									opc1 = 's';
+									getch();
+									break;
+								}
+								default:{
+									cout<<"<<OPCION NO VALIDA>>"<<endl;
+									getch();
+									break;
+								}
+
+							}
+
+						}while (opc1 != 's');
+
+						break;
+					}
+					case '2' :{
+						system ("cls");
+						do {
+							system ("cls");
+							menuCola ();
+							cout<<"\tOPCION: ";
+							opc1=getch( );
+							switch(opc1) {
+								case '1':{
+									fflush(stdin);
+									cout<<"\t\tINSERTAR"<<endl;
+									insertarCola();
+									break;
+								}
+								case '2':{
+									extraerCola();
+									cout<<"\t\tSE HA ELIMINADO EL DATO CON EXITO"<<endl;
+									cout<<"\t\tPRESIONE UNA TECLA PARA CONTINUAR"<<endl;
+									getch ();
+									break;
+								}
+								case '3':{
+									cout<<"\t\tVISUALIZAR"<<endl;
+									visualizarCola();
+									break;
+								}
+								case '4':{
+									cout<<"\t\tHA DECIDIO SALIR AL MENU PRINCIPAL"<<endl;
+									opc1 = 's';
+									getch();
+									break;
+								}
+								default:{
+									cout<<"<<OPCION NO VALIDA>>"<<endl;
+									break;
+								}
+
+							}
+
+						}while (opc1 != 's');
+
+						break;
+					}
+					case '3' :{
+						system ("cls");
+						do {
+							system ("cls");
+							menuArbol ();
+							cout<<"\tOPCION: ";
+							opc1=getch( );
+							switch(opc1){
+								system ("cls");
+								case '1':{
+									int dato;
+									cout<<"\t\t<<CREAR ARBOL>>"<<endl;
+									cout<<"\t\tAGREGUE UN DATO: "<<endl;
+									cin>>dato;
+									insertarNodo(arbol,dato); // insertar nuevo nodo
+									cout<<endl;
+									break;
+								}
+								case '2':{
+									cout<<"\t\tRECORRIDO  PRE-ORDEN"<<endl;
+									preOrden(arbol);
+									cout<<"\n\n";
+									getch();
+									break;
+								}
+								case '3':{
+									cout<<"\t\tRECORRIDO  POST-ORDEN"<<endl;
+									postOrden (arbol);
+									cout<<"\n\n";
+									getch();
+									break;
+								}
+								case '4':{
+									cout<<"\t\tRECORRIDO  IN-ORDEN"<<endl;
+									inOrden (arbol);
+									cout<<"\n\n";
+									getch();
+									break;
+								}
+								case '5':{
+									cout<<"\t\tHA DECIDIO SALIR AL MENU PRINCIPAL"<<endl;
+									getch();
+									break;
+								}
+								default:{
+									cout<<"<<OPCION NO VALIDA>>"<<endl;
+									getch();
+									break;
+								}
+
+							}
+
+						}while (opc1 != '5' );
+					break;
+					}
+					case '4': {
+						cout<<"<<HA DECIDIDO SALIR DEL PROGRAMA>>";
+						break;
+					}
+					default :{
+						cout<<"<<OPCION NO VALIDA>>"<<endl;
+						getch ();
+						break;
+					}
+
+				}
+
+
+		}while (opc != '4');
+return 0;
+}
+//MENUS
+void menu (){
+	cout<<"\t\t****************************************************"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                   MENU PRINCIPAL                 *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*              1.PILA                              *"<<endl;
+	cout<<"\t\t*              2.COLA                              *"<<endl;
+	cout<<"\t\t*              3.ARBOLES BINARIOS                  *"<<endl;
+	cout<<"\t\t*              4.SALIR                             *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t****************************************************"<<endl;
+}
+void menuPila (){
+	cout<<"\t\t****************************************************"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                   MENU PILA                      *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*              1.INSERTAR                          *"<<endl;
+	cout<<"\t\t*              2.EXTRAER                           *"<<endl;
+	cout<<"\t\t*              3.VISUALIZAR                        *"<<endl;
+	cout<<"\t\t*              4.SALIR                             *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t****************************************************"<<endl;
+}
+void menuCola (){
+	cout<<"\t\t****************************************************"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                   MENU COLA                      *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*              1.INSERTAR                          *"<<endl;
+	cout<<"\t\t*              2.EXTRAER                           *"<<endl;
+	cout<<"\t\t*              3.VISUALIZAR                        *"<<endl;
+	cout<<"\t\t*              4.SALIR                             *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t****************************************************"<<endl;
+}
+void menuArbol (){
+	cout<<"\t\t****************************************************"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                MENU ARBOL BINARIOS               *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*              1.CREAR ARBOL                       *"<<endl;
+	cout<<"\t\t*              2.RECORRIDO PRE-ORDEN               *"<<endl;
+	cout<<"\t\t*              3.RECORRIDO POST-ORDEN              *"<<endl;
+	cout<<"\t\t*              4.RECORRIDO IN-ORDEN                *"<<endl;
+	cout<<"\t\t*              5.SALIR                             *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t*                                                  *"<<endl;
+	cout<<"\t\t****************************************************"<<endl;
+}
+
+//PILA
+void insertarPila(){
+	AUX=(struct pila *)malloc(sizeof(struct pila));
+	cout<<"Nombre: ";
+	gets(AUX->nombre);
+	if (CAB==NULL)
+	{
+		CAB=AUX;
+		AUX->ant=NULL;
+	}
+	else
+	{
+		AUX->ant=CAB;
+		CAB=AUX;
+	}
+}
+
+void extraerPila(){
+	if (CAB==NULL) return;
+	AUX=CAB;
+	CAB=CAB->ant;
+	free(AUX);
+}
+
+void visualizarPila(){
+	if (CAB==NULL) return;
+	AUX=CAB;
+	while (AUX!=NULL)
+	{
+		printf("Nombre: %s\n",AUX->nombre);
+		AUX=AUX->ant;
+	}
+	getch( );
+}
+
+//COLA
+void insertarCola(){
+	AUX2=(struct cola *)malloc(sizeof(struct cola));
+	printf("Nombre: ");
+	gets(AUX2->nombre2);
+	AUX2->sig=NULL;
+	if (FIN2==NULL)
+		FIN2=CAB2=AUX2;
+	else{
+		FIN2->sig=AUX2;
+		FIN2=AUX2;
+	}
+}
+
+void extraerCola(){
+	if (CAB2==NULL) return;
+	AUX2=CAB2;
+	CAB2=CAB2->sig;
+	free(AUX2);
+}
+
+void visualizarCola(){
+	if (CAB2==NULL) return;
+	AUX2=CAB2;
+	while (AUX2!=NULL)
+	{
+		printf("|%s| ",AUX2->nombre2);
+		AUX2=AUX2->sig;
+	}
+	getch();
+}
+
+//ARBOL BINARIO
+//CREAR NODO
+Nodo *crearNodo (int n){
+	Nodo *nuevo_nodo = new Nodo ();
+
+	nuevo_nodo->dato = n;
+	nuevo_nodo->der = NULL;
+	nuevo_nodo->izq = NULL;
+
+	return nuevo_nodo;
+}
+//INSERTAR NODO
+void insertarNodo(Nodo *&arbol,int n ){
+	if (arbol == NULL){
+		Nodo *nuevo_nodo = crearNodo(n);
+		arbol = nuevo_nodo;
+	}
+	else{
+		int valorRaiz = arbol->dato;
+		if (n < valorRaiz){
+			insertarNodo(arbol->izq,n);
+		}
+		else{
+			insertarNodo(arbol->der,n);
+		}
+	}
+}
+
+// modo preorden
+void preOrden(Nodo *arbol){
+	if (arbol == NULL){
+		return;
+	}
+	else{
+		cout<<arbol->dato<<" - ";
+		preOrden(arbol->izq);
+		preOrden(arbol->der);
+	}
+}
+
+//pos orden
+
+void postOrden(Nodo *arbol){
+	if (arbol == NULL){
+		return;
+	}
+	else{
+		postOrden(arbol->izq);
+		postOrden(arbol->der);
+		cout<<arbol->dato<<" - ";
+	}
+}
+
+// in Orden
+
+void inOrden (Nodo *arbol){
+	if (arbol == NULL){
+		return;
+	}
+	else{
+		inOrden(arbol->izq);
+		cout<<arbol->dato<<" - ";
+		inOrden(arbol->der);
+
+	}
+}
